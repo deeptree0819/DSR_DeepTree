@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!--
+        Doosan m0609 + OnRobot RG2 통합 ros2_control 하드웨어 인터페이스.
+        arm 6축(joint_1~6) + 그리퍼 1축(rg2_finger_joint) 을 하나의
+        TopicBasedSystem 으로 묶어 Isaac Sim 과 통신합니다.
+    -->
+    <xacro:macro name="dsr_m0609_rg2_ros2_control" params="name ros2_control_hardware_type">
+        <ros2_control name="${name}" type="system">
+            <hardware>
+                <xacro:if value="${ros2_control_hardware_type == 'mock_components'}">
+                    <plugin>mock_components/GenericSystem</plugin>
+                </xacro:if>
+                <xacro:if value="${ros2_control_hardware_type == 'isaac'}">
+                    <plugin>topic_based_ros2_control/TopicBasedSystem</plugin>
+                    <param name="joint_commands_topic">/isaac_joint_commands</param>
+                    <param name="joint_states_topic">/isaac_joint_states</param>
+                </xacro:if>
+            </hardware>
+
+            <!-- ── Doosan m0609 arm joints ──────────────────────────── -->
+            <joint name="joint_1">
+                <command_interface name="position"/>
+                <state_interface name="position"/>
+                <state_interface name="velocity">
+                    <param name="initial_value">0.0</param>
+                </state_interface>
+            </joint>
+            <joint name="joint_2">
+                <command_interface name="position"/>
+                <state_interface name="position"/>
+                <state_interface name="velocity">
+                    <param name="initial_value">0.0</param>
+                </state_interface>
+            </joint>
+            <joint name="joint_3">
+                <command_interface name="position"/>
+                <state_interface name="position"/>
+                <state_interface name="velocity">
+                    <param name="initial_value">0.0</param>
+                </state_interface>
+            </joint>
+            <joint name="joint_4">
+                <command_interface name="position"/>
+                <state_interface name="position"/>
+                <state_interface name="velocity">
+                    <param name="initial_value">0.0</param>
+                </state_interface>
+            </joint>
+            <joint name="joint_5">
+                <command_interface name="position"/>
+                <state_interface name="position"/>
+                <state_interface name="velocity">
+                    <param name="initial_value">0.0</param>
+                </state_interface>
+            </joint>
+            <joint name="joint_6">
+                <command_interface name="position"/>
+                <state_interface name="position"/>
+                <state_interface name="velocity">
+                    <param name="initial_value">0.0</param>
+                </state_interface>
+            </joint>
+
+            <!-- ── OnRobot RG2 gripper main joint ───────────────────── -->
+            <joint name="rg2_finger_joint">
+                <command_interface name="position"/>
+                <state_interface name="position"/>
+                <state_interface name="velocity">
+                    <param name="initial_value">0.0</param>
+                </state_interface>
+            </joint>
+        </ros2_control>
+    </xacro:macro>
+</robot>

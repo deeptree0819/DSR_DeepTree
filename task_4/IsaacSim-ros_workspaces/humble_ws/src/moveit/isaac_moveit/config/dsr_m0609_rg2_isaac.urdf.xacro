@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="m0609_rg2">
+    <!--
+        Doosan m0609 + OnRobot RG2 통합 URDF — Isaac Sim + MoveIt2 전용.
+
+        ros2_control_hardware_type:
+          - "isaac"           : TopicBasedSystem (기본값, Isaac Sim 연동)
+          - "mock_components" : GenericSystem (시뮬레이터 없이 테스트)
+    -->
+    <xacro:arg name="ros2_control_hardware_type" default="isaac"/>
+
+    <!-- ── Doosan m0609 로봇 ──────────────────────────────────────── -->
+    <xacro:include filename="$(find dsr_description2)/urdf/m0609.urdf"/>
+
+    <!-- ── OnRobot RG2 그리퍼 (Isaac Sim 용 절대경로 mesh) ─────── -->
+    <xacro:include filename="$(find isaac_moveit)/config/onrobot_rg2_isaac.xacro"/>
+
+    <!-- link_6 에 그리퍼 부착 -->
+    <xacro:onrobot_rg2 prefix="rg2_" parent="link_6">
+        <!-- link_6 플랜지 면에 flush 하게 붙임.
+             실제 장착 시 z 오프셋이 필요하면 xyz="0 0 <offset>" 으로 수정 -->
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:onrobot_rg2>
+
+    <!-- ── ros2_control (arm 6 + gripper 1) ─────────────────────── -->
+    <xacro:include filename="$(find isaac_moveit)/config/dsr_m0609_rg2_ros2_control.xacro"/>
+    <xacro:dsr_m0609_rg2_ros2_control
+        name="DSRIsaacSystem"
+        ros2_control_hardware_type="$(arg ros2_control_hardware_type)"/>
+</robot>

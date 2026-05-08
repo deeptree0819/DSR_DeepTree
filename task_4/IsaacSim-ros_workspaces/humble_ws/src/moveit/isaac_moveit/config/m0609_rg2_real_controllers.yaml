@@ -1,0 +1,55 @@
+# ros2_control 컨트롤러 설정
+# Doosan m0609 (DRHWInterface) + OnRobot RG2 (mock_components)
+# mode:=real / mode:=virtual 공통 사용
+
+/**:
+  controller_manager:
+    ros__parameters:
+      update_rate: 100
+
+      joint_state_broadcaster:
+        type: joint_state_broadcaster/JointStateBroadcaster
+
+      dsr_controller2:
+        type: dsr_controller2/RobotController
+
+      dsr_moveit_controller:
+        type: joint_trajectory_controller/JointTrajectoryController
+
+      rg2_gripper_controller:
+        type: joint_trajectory_controller/JointTrajectoryController
+
+dsr_controller2:
+  ros__parameters:
+    joints:
+      - joint_1
+      - joint_2
+      - joint_3
+      - joint_4
+      - joint_5
+      - joint_6
+
+dsr_moveit_controller:
+  ros__parameters:
+    command_interfaces:
+      - position
+      - velocity
+    state_interfaces:
+      - position
+      - velocity
+    joints:
+      - joint_1
+      - joint_2
+      - joint_3
+      - joint_4
+      - joint_5
+      - joint_6
+
+rg2_gripper_controller:
+  ros__parameters:
+    joints:
+      - rg2_finger_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position

@@ -1,0 +1,24 @@
+# ROS2 build artifacts
+build/
+install/
+log/
+*.egg-info/
+.eggs/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# IDE
+.vscode/
+.idea/
+
+# Claude Code
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large archives (exceed GitHub 100MB limit)
+*.zip

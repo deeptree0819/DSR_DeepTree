@@ -1,0 +1,15 @@
+# Speak.srv
+# tts_node 에 텍스트를 보내 즉시 음성 출력 요청
+#
+# 서비스: /speak
+
+# ── Request ─────────────────────────────────────
+string text         # 읽어줄 텍스트
+float32 rate        # 발화 속도 (기본 1.0, 범위 0.5 ~ 2.0)
+bool    blocking    # true: 출력 완료까지 대기
+
+---
+
+# ── Response ────────────────────────────────────
+bool   success
+string message

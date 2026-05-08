@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!--
+    Doosan m0609 + OnRobot RG2  — 실물(real) / 가상(virtual) 모드용 URDF
+    (Isaac Sim 대신 DRHWInterface 를 사용합니다)
+
+    사용 예:
+      mode:=real    host:=192.168.1.100   → 실물 로봇 직접 연결
+      mode:=virtual host:=127.0.0.1       → Doosan 내장 에뮬레이터
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="m0609_rg2">
+
+    <!-- ══ 인수 ══════════════════════════════════════════════════════════════ -->
+    <xacro:arg name="host"        default="127.0.0.1"/>
+    <xacro:arg name="port"        default="12345"/>
+    <xacro:arg name="rt_host"     default="192.168.137.50"/>
+    <xacro:arg name="mode"        default="real"/>
+    <xacro:arg name="update_rate" default="100"/>
+    <!-- include된 dsr_description2 매크로가 top-level arg로 참조하는 항목 -->
+    <xacro:arg name="namespace"   default=""/>
+    <xacro:arg name="color"       default="white"/>
+    <xacro:arg name="use_gazebo"  default="false"/>
+    <xacro:arg name="use_mujoco"  default="false"/>
+    <xacro:arg name="simple"      default="false"/>
+
+    <!-- ══ m0609 시각/운동학 (white) ═════════════════════════════════════════ -->
+    <xacro:include filename="$(find dsr_description2)/xacro/macro.m0609.white.xacro"/>
+    <xacro:m0609 namespace="" simple="false"/>
+
+    <!-- ══ World joint ═══════════════════════════════════════════════════════ -->
+    <!-- macro.m0609.white.xacro 는 world 링크를 포함하지 않으므로 직접 추가 -->
+    <link name="world"/>
+    <joint name="world_fixed" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="world"/>
+        <child  link="base_link"/>
+    </joint>
+
+    <!-- ══ m0609 arm ros2_control (DRHWInterface) ════════════════════════════ -->
+    <xacro:include filename="$(find dsr_description2)/ros2_control/m0609.ros2_control.xacro"/>
+    <xacro:m0609_ros2_control
+        name="m0609"
+        host="$(arg host)"
+        rt_host="$(arg rt_host)"
+        port="$(arg port)"
+        mode="$(arg mode)"
+        model="m0609"
+        update_rate="$(arg update_rate)"
+    />
+
+    <!-- ══ OnRobot RG2 그리퍼 ════════════════════════════════════════════════ -->
+    <xacro:include filename="$(find isaac_moveit)/config/onrobot_rg2_isaac.xacro"/>
+    <xacro:onrobot_rg2 prefix="rg2_" parent="link_6">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:onrobot_rg2>
+
+    <!-- ══ RG2 그리퍼 ros2_control (mock_components) ══════════════════════════
+         실물 로봇에서 RG2는 별도 드라이버로 제어합니다.
+         여기서는 MoveIt2 충돌 회피 계획용 위치 상태만 유지합니다.         -->
+    <ros2_control name="rg2_gripper" type="system">
+        <hardware>
+            <plugin>mock_components/GenericSystem</plugin>
+        </hardware>
+        <joint name="rg2_finger_joint">
+            <command_interface name="position">
+                <param name="min">0.0</param>
+                <param name="max">1.18</param>
+            </command_interface>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+        </joint>
+    </ros2_control>
+
+</robot>

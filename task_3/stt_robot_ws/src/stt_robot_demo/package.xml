@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>stt_robot_demo</name>
+  <version>0.0.0</version>
+  <description>STT 음성 명령 기반 Pick &amp; Place 데모 — 노드 패키지</description>
+  <maintainer email="deeptree@todo.todo">deeptree</maintainer>
+  <license>Apache-2.0</license>
+
+  <depend>rclpy</depend>
+  <depend>std_msgs</depend>
+  <depend>stt_robot_interfaces</depend>
+  <depend>moveit_py</depend>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

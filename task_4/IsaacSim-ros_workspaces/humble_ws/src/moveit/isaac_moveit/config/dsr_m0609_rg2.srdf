@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<!--
+    Doosan m0609 + OnRobot RG2 시맨틱 로봇 설명 (SRDF).
+
+    그룹:
+      - manipulator : m0609 arm (base_link → link_6), 6-DOF
+      - gripper     : RG2 finger_joint 1-DOF
+
+    엔드이펙터:
+      - rg2_eef : link_6 에 부착된 gripper 그룹
+-->
+<robot name="m0609_rg2">
+
+    <!-- ══ Planning Groups ═══════════════════════════════════════════ -->
+    <group name="manipulator">
+        <chain base_link="base_link" tip_link="link_6"/>
+    </group>
+
+    <group name="gripper">
+        <joint name="rg2_finger_joint"/>
+    </group>
+
+    <!-- ══ Group States ══════════════════════════════════════════════ -->
+    <group_state name="all-zeros" group="manipulator">
+        <joint name="joint_1" value="0"/>
+        <joint name="joint_2" value="0"/>
+        <joint name="joint_3" value="0"/>
+        <joint name="joint_4" value="0"/>
+        <joint name="joint_5" value="0"/>
+        <joint name="joint_6" value="0"/>
+    </group_state>
+
+    <group_state name="open" group="gripper">
+        <joint name="rg2_finger_joint" value="0.0"/>
+    </group_state>
+
+    <group_state name="closed" group="gripper">
+        <joint name="rg2_finger_joint" value="1.18"/>
+    </group_state>
+
+    <!-- ══ End Effector ══════════════════════════════════════════════ -->
+    <end_effector name="rg2_eef"
+                  parent_link="link_6"
+                  group="gripper"/>
+
+    <!-- ══ Virtual Joint ═════════════════════════════════════════════ -->
+    <virtual_joint name="FixedBase"
+                   type="fixed"
+                   parent_frame="world"
+                   child_link="base_link"/>
+
+    <!-- ══ Disable Collisions ════════════════════════════════════════ -->
+    <!-- arm 인접 링크 쌍 -->
+    <disable_collisions link1="base_link"  link2="link_1"  reason="Adjacent"/>
+    <disable_collisions link1="link_1"     link2="link_2"  reason="Adjacent"/>
+    <disable_collisions link1="link_1"     link2="link_3"  reason="Never"/>
+    <disable_collisions link1="link_2"     link2="link_3"  reason="Adjacent"/>
+    <disable_collisions link1="link_2"     link2="link_5"  reason="Never"/>
+    <disable_collisions link1="link_2"     link2="link_6"  reason="Never"/>
+    <disable_collisions link1="link_3"     link2="link_4"  reason="Adjacent"/>
+    <disable_collisions link1="link_3"     link2="link_5"  reason="Never"/>
+    <disable_collisions link1="link_3"     link2="link_6"  reason="Never"/>
+    <disable_collisions link1="link_4"     link2="link_5"  reason="Adjacent"/>
+    <disable_collisions link1="link_4"     link2="link_6"  reason="Never"/>
+    <disable_collisions link1="link_5"     link2="link_6"  reason="Adjacent"/>
+
+    <!-- link_6 ↔ 그리퍼 최상위 링크 (물리적으로 붙어있음) -->
+    <disable_collisions link1="link_6"     link2="rg2_quick_changer"        reason="Adjacent"/>
+    <disable_collisions link1="link_6"     link2="rg2_angle_bracket"        reason="Never"/>
+    <disable_collisions link1="link_6"     link2="rg2_gripper_body"         reason="Never"/>
+
+    <!-- ── 그리퍼 내부 충돌 비활성화 ────────────────────────────── -->
+    <!-- 고정 링크 체인 -->
+    <disable_collisions link1="rg2_quick_changer"  link2="rg2_angle_bracket"   reason="Adjacent"/>
+    <disable_collisions link1="rg2_angle_bracket"  link2="rg2_gripper_body"    reason="Adjacent"/>
+
+    <!-- gripper_body ↔ 각 knuckle (직접 연결) -->
+    <disable_collisions link1="rg2_gripper_body" link2="rg2_right_outer_knuckle" reason="Adjacent"/>
+    <disable_collisions link1="rg2_gripper_body" link2="rg2_left_outer_knuckle"  reason="Adjacent"/>
+    <disable_collisions link1="rg2_gripper_body" link2="rg2_left_inner_knuckle"  reason="Adjacent"/>
+    <disable_collisions link1="rg2_gripper_body" link2="rg2_right_inner_knuckle" reason="Adjacent"/>
+
+    <!-- outer knuckle ↔ inner finger (직접 연결) -->
+    <disable_collisions link1="rg2_right_outer_knuckle" link2="rg2_right_inner_finger" reason="Adjacent"/>
+    <disable_collisions link1="rg2_left_outer_knuckle"  link2="rg2_left_inner_finger"  reason="Adjacent"/>
+
+    <!-- ★ 실제 충돌 발생 쌍 (mimic 기구 구조상 항상 함께 움직임) -->
+    <disable_collisions link1="rg2_left_outer_knuckle"  link2="rg2_left_inner_knuckle"  reason="Never"/>
+    <disable_collisions link1="rg2_right_outer_knuckle" link2="rg2_right_inner_knuckle" reason="Never"/>
+
+    <!-- outer knuckle ↔ 반대쪽 inner knuckle (대각선) -->
+    <disable_collisions link1="rg2_left_outer_knuckle"  link2="rg2_right_inner_knuckle" reason="Never"/>
+    <disable_collisions link1="rg2_right_outer_knuckle" link2="rg2_left_inner_knuckle"  reason="Never"/>
+
+    <!-- inner knuckle ↔ inner finger -->
+    <disable_collisions link1="rg2_left_inner_knuckle"  link2="rg2_left_inner_finger"   reason="Never"/>
+    <disable_collisions link1="rg2_right_inner_knuckle" link2="rg2_right_inner_finger"  reason="Never"/>
+    <disable_collisions link1="rg2_left_inner_knuckle"  link2="rg2_right_inner_finger"  reason="Never"/>
+    <disable_collisions link1="rg2_right_inner_knuckle" link2="rg2_left_inner_finger"   reason="Never"/>
+
+    <!-- 좌우 대칭 쌍 (gripper 완전 개방/폐쇄 시 접촉 가능) -->
+    <disable_collisions link1="rg2_left_outer_knuckle"  link2="rg2_right_outer_knuckle" reason="Never"/>
+    <disable_collisions link1="rg2_left_inner_finger"   link2="rg2_right_inner_finger"  reason="Never"/>
+    <disable_collisions link1="rg2_left_inner_finger"   link2="rg2_right_outer_knuckle" reason="Never"/>
+    <disable_collisions link1="rg2_right_inner_finger"  link2="rg2_left_outer_knuckle"  reason="Never"/>
+
+    <!-- gripper_body ↔ inner finger -->
+    <disable_collisions link1="rg2_gripper_body" link2="rg2_left_inner_finger"  reason="Never"/>
+    <disable_collisions link1="rg2_gripper_body" link2="rg2_right_inner_finger" reason="Never"/>
+
+    <!-- ── arm 링크 ↔ 그리퍼 전체 충돌 비활성화 ─────────────────── -->
+    <!-- arm 이 어떤 자세를 취해도 그리퍼가 암 링크와 충돌 검사 안 함 -->
+    <disable_collisions link1="link_4" link2="rg2_quick_changer"      reason="Never"/>
+    <disable_collisions link1="link_4" link2="rg2_angle_bracket"      reason="Never"/>
+    <disable_collisions link1="link_4" link2="rg2_gripper_body"       reason="Never"/>
+    <disable_collisions link1="link_4" link2="rg2_left_outer_knuckle"  reason="Never"/>
+    <disable_collisions link1="link_4" link2="rg2_right_outer_knuckle" reason="Never"/>
+    <disable_collisions link1="link_4" link2="rg2_left_inner_knuckle"  reason="Never"/>
+    <disable_collisions link1="link_4" link2="rg2_right_inner_knuckle" reason="Never"/>
+    <disable_collisions link1="link_4" link2="rg2_left_inner_finger"   reason="Never"/>
+    <disable_collisions link1="link_4" link2="rg2_right_inner_finger"  reason="Never"/>
+
+    <disable_collisions link1="link_5" link2="rg2_quick_changer"      reason="Never"/>
+    <disable_collisions link1="link_5" link2="rg2_angle_bracket"      reason="Never"/>
+    <disable_collisions link1="link_5" link2="rg2_gripper_body"       reason="Never"/>
+    <disable_collisions link1="link_5" link2="rg2_left_outer_knuckle"  reason="Never"/>
+    <disable_collisions link1="link_5" link2="rg2_right_outer_knuckle" reason="Never"/>
+    <disable_collisions link1="link_5" link2="rg2_left_inner_knuckle"  reason="Never"/>
+    <disable_collisions link1="link_5" link2="rg2_right_inner_knuckle" reason="Never"/>
+    <disable_collisions link1="link_5" link2="rg2_left_inner_finger"   reason="Never"/>
+    <disable_collisions link1="link_5" link2="rg2_right_inner_finger"  reason="Never"/>
+
+</robot>

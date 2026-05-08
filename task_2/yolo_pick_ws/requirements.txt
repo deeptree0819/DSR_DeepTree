@@ -1,0 +1,19 @@
+# YOLO 추론
+ultralytics>=8.0
+
+# 영상 처리
+opencv-python>=4.5
+
+# 수치 연산 (ultralytics/opencv 호환을 위해 2.0 미만)
+numpy>=1.23,<2.0
+
+# 좌표 변환 (scipy.spatial.transform.Rotation)
+scipy>=1.10
+
+# OnRobot RG2 그리퍼 Modbus TCP 통신
+# 반드시 2.x — onrobot.py 가 pymodbus.client.sync 사용 (3.x 에서 제거됨)
+pymodbus==2.5.3
+
+# (선택) RealSense SDK 직접 접근용
+# ROS realsense2_camera 노드만 쓸 거라면 불필요
+pyrealsense2>=2.50

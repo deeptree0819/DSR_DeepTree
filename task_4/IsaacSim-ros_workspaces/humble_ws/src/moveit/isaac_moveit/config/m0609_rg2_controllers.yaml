@@ -1,0 +1,43 @@
+# ros2_control controller_manager 설정
+# Doosan m0609 arm + OnRobot RG2 gripper 통합 컨트롤러
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    dsr_moveit_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    rg2_gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+
+# ── Doosan m0609 arm 컨트롤러 ─────────────────────────────────────────
+dsr_moveit_controller:
+  ros__parameters:
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    joints:
+      - joint_1
+      - joint_2
+      - joint_3
+      - joint_4
+      - joint_5
+      - joint_6
+
+
+# ── OnRobot RG2 그리퍼 컨트롤러 ──────────────────────────────────────
+rg2_gripper_controller:
+  ros__parameters:
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    joints:
+      - rg2_finger_joint

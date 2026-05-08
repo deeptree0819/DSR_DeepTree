@@ -1,0 +1,15 @@
+# SetGripper.srv
+# 그리퍼를 목표 폭·힘으로 즉시 이동시키는 단발성 서비스
+# onrobot.py의 move_gripper(width_val, force_val) 래핑
+
+# ── Request ──────────────────────────────
+float32 width_mm   # 목표 폭 [mm]  RG2: 0.0 ~ 110.0
+float32 force_n    # 목표 힘  [N]  RG2: 0.0 ~  40.0
+bool    blocking   # true: 그리퍼 동작 완료까지 블로킹
+
+---
+
+# ── Response ─────────────────────────────
+bool    success           # 명령 전송 및 완료 여부
+float32 actual_width_mm   # 완료 후 실제 폭 [mm]
+string  message           # 오류 메시지 (success=false 시)

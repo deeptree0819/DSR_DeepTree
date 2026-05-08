@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="m1013">
+    <!--
+        Doosan m1013 URDF for Isaac Sim + MoveIt2.
+        ros2_control_hardware_type:
+          - "isaac"           : TopicBasedSystem (default, for Isaac Sim)
+          - "mock_components" : GenericSystem (standalone testing without simulator)
+    -->
+    <xacro:arg name="ros2_control_hardware_type" default="isaac" />
+
+    <!-- Doosan m1013 robot description -->
+    <xacro:include filename="$(find dsr_description2)/urdf/m1013.urdf" />
+
+    <!-- Isaac-compatible ros2_control hardware interface -->
+    <xacro:include filename="$(find isaac_moveit)/config/dsr_isaac.ros2_control.xacro" />
+
+    <xacro:dsr_isaac_ros2_control
+        name="DSRIsaacSystem"
+        ros2_control_hardware_type="$(arg ros2_control_hardware_type)" />
+</robot>

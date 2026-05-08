@@ -1,0 +1,25 @@
+# GetTaskList.srv
+# 서버에 등록된 기어 Pick & Place 작업 목록을 조회
+# gear_assembly.py의 GEAR_TASKS 리스트를 동적으로 노출
+
+# ── Request ──────────────────────────────
+# (empty) — 조건 없이 전체 목록 반환
+
+---
+
+# ── Response ─────────────────────────────
+bool     success
+uint8    total_count           # 전체 기어 작업 수
+
+# 각 기어의 pick / place 포즈를 평탄화해서 반환
+# 인덱스 i 기어:  pick_poses[i], place_poses[i]
+geometry_msgs/Pose[] pick_poses
+geometry_msgs/Pose[] place_poses
+
+# 마지막 기어 wiggle 파라미터
+bool    last_gear_wiggle       # true = 마지막 기어에 wiggle 적용
+float32 wiggle_z               # wiggle 수행 높이 [m]
+float32 wiggle_yaw_deg         # 좌우 회전 각도 [deg]
+uint8   wiggle_count           # 반복 횟수
+
+string  message

@@ -1,0 +1,49 @@
+# PickAndPlace.action
+# 단일 기어의 Pick & Place 전체 시퀀스를 비동기로 실행
+# gear_assembly.py의 pick→grip→retreat→transfer→place 흐름을 액션으로 래핑
+#
+# 사용 예:
+#   - 기어 1개: task_id="gear_1", pick_pose=..., place_pose=...
+#   - 전체 4개: use_all_tasks=true로 설정하면 GEAR_TASKS 순서대로 실행
+
+# ════════════════════════════════
+#   Goal  (클라이언트 → 서버)
+# ════════════════════════════════
+string task_id              # 작업 식별자 (예: "gear_1" ~ "gear_4")
+                            # use_all_tasks=true 이면 무시됨
+
+bool use_all_tasks          # true: 서버에 등록된 모든 기어를 순서대로 실행
+
+# 개별 포즈 지정 (use_all_tasks=false 일 때 사용)
+geometry_msgs/Pose pick_pose        # 픽 목표 포즈 (base_link 기준)
+geometry_msgs/Pose place_pose       # 플레이스 목표 포즈 (base_link 기준)
+
+# 동작 파라미터
+float32 approach_offset_m   # 접근·후퇴 z 오프셋 [m]   기본: 0.05
+float32 max_velocity_scale  # 최대 속도 스케일 [0~1]    기본: 0.15
+bool    use_wiggle           # 마지막 기어 wiggle 활성화  기본: true
+
+---
+
+# ════════════════════════════════
+#   Result  (서버 → 클라이언트, 완료 시)
+# ════════════════════════════════
+bool    success              # 전체 시퀀스 성공 여부
+uint8   completed_gears      # 성공적으로 완료한 기어 수
+float32 elapsed_sec          # 총 소요 시간 [s]
+string  message              # 결과 메시지 또는 오류 내용
+
+---
+
+# ════════════════════════════════
+#   Feedback  (서버 → 클라이언트, 실행 중)
+# ════════════════════════════════
+uint8   gear_index           # 현재 작업 중인 기어 번호 (1-based)
+uint8   total_gears          # 전체 기어 수
+
+# 현재 스텝 — TaskStatus.msg의 STEP_* 상수와 동일
+string  current_step         # APPROACH / PICK / RETREAT / TRANSFER / WIGGLE / PLACE
+
+float32 progress_pct         # 전체 진행률 [%] 0.0 ~ 100.0
+bool    gripper_busy         # 그리퍼 동작 중 여부
+string  message              # 단계별 상태 메시지

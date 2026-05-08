@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>pick_place_interfaces</name>
+  <version>0.0.0</version>
+  <description>
+    ROS2 커스텀 인터페이스 패키지 — Pick and Place 데모용
+    토픽(msg), 서비스(srv), 액션(action) 정의 포함
+  </description>
+  <maintainer email="deeptree@todo.todo">deeptree</maintainer>
+  <license>Apache-2.0</license>
+
+  <!-- 빌드 도구 -->
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+
+  <!-- 인터페이스가 의존하는 메시지 패키지 -->
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>action_msgs</depend>
+
+  <!-- 런타임 의존 (생성된 인터페이스 사용 시 필요) -->
+  <exec_depend>rosidl_default_runtime</exec_depend>
+
+  <!-- 인터페이스 패키지임을 선언 (최상위 태그) -->
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <!-- 테스트 -->
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
