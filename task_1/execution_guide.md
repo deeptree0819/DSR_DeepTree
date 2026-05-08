@@ -63,11 +63,13 @@ ping 192.168.1.1        # PC → Tool Changer (그리퍼)
 |---|---|---|
 | ROS2 base | `/opt/ros/humble/` | 자동 소싱 (`.bashrc`에 등록됨) |
 | ros2_ws | `~/ros2_ws/` | DSR 드라이버 + MoveIt 설정 |
+| ws_moveit | `~/ws_moveit/` | `moveit_configs_utils`, `launch_param_builder` (소스 빌드) |
 | pick_place_ws | `~/pick_place_ws/` | pick_place_demo / pick_place_interfaces |
 
 > **`.bashrc` 등록 별칭 (새 터미널마다 사용)**
 > ```bash
 > ros2_ws        # source ~/ros2_ws/install/local_setup.bash
+> ws_moveit      # source ~/ws_moveit/install/local_setup.bash
 > pick_place_ws  # source ~/pick_place_ws/install/local_setup.bash
 > ```
 
@@ -109,9 +111,9 @@ ros2 interface list | grep pick_place
 ### 3-1. 터미널 구성 (3개)
 
 ```
-[터미널 1] DSR 드라이버 + MoveIt   ← ros2_ws 소싱 필요
-[터미널 2] pick_place_server        ← ros2_ws + pick_place_ws 소싱 필요
-[터미널 3] pick_place_client        ← ros2_ws + pick_place_ws 소싱 필요
+[터미널 1] DSR 드라이버 + MoveIt   ← ros2_ws + ws_moveit 소싱 필요
+[터미널 2] pick_place_server        ← ros2_ws + ws_moveit + pick_place_ws 소싱 필요
+[터미널 3] pick_place_client        ← pick_place_ws 소싱 필요 (MoveIt 미사용)
 ```
 
 > **주의:** `/opt/ros/humble/setup.bash`는 `.bashrc`에 이미 등록되어 있어  
@@ -122,10 +124,13 @@ ros2 interface list | grep pick_place
 ### 3-2. 터미널 1 — DSR 드라이버 + MoveIt 실행
 
 ```bash
-# 1) ros2_ws 소싱 (DSR 드라이버 + MoveIt 포함)
+# 1) ros2_ws 소싱 (DSR 드라이버)
 ros2_ws
 
-# 2) 실제 로봇 연결 모드로 실행
+# 2) ws_moveit 소싱 (moveit_configs_utils — DSR MoveIt launch 의존)
+ws_moveit
+
+# 3) 실제 로봇 연결 모드로 실행
 ros2 launch dsr_bringup2 dsr_bringup2_moveit.launch.py \
     mode:=real \
     model:=m0609 \
@@ -141,10 +146,13 @@ MoveIt이 `/joint_states` 토픽을 수신하고
 # 1) ros2_ws 소싱 (DSR 메시지 타입 의존성)
 ros2_ws
 
-# 2) pick_place_ws 소싱
+# 2) ws_moveit 소싱 (launch 파일이 moveit_configs_utils 사용)
+ws_moveit
+
+# 3) pick_place_ws 소싱
 pick_place_ws
 
-# 3) 서버 실행
+# 4) 서버 실행
 ros2 launch pick_place_demo pick_place.launch.py
 ```
 
@@ -158,13 +166,10 @@ ros2 launch pick_place_demo pick_place.launch.py
 ### 3-4. 터미널 3 — pick_place_client 실행
 
 ```bash
-# 1) ros2_ws 소싱 (DSR 메시지 타입 의존성)
-ros2_ws
-
-# 2) pick_place_ws 소싱
+# 1) pick_place_ws 소싱 (pick_place_interfaces만 사용; MoveIt 미사용)
 pick_place_ws
 
-# 3) 클라이언트 실행
+# 2) 클라이언트 실행
 # 전체 4개 기어 순서대로 실행 (기본)
 ros2 run pick_place_demo pick_place_client
 
