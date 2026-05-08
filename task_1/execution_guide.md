@@ -7,6 +7,12 @@
 
 ---
 
+## 0. 실행 영상
+
+[Google Drive 링크](https://drive.google.com/file/d/1g3YwA3QIpCv8fQWgglet9i-Or_jS1tvd/view?usp=sharing)
+
+---
+
 ## 1. 사전 준비
 
 ### 1-0. 필수 라이브러리 설치

@@ -7,6 +7,7 @@ DSR 직접 제어 버전과 MoveIt2 기반 3가지 시나리오(단일 픽 / 정
 
 ## 목차
 
+0. [실행 영상](#0-실행-영상)
 1. [시스템 구조](#1-시스템-구조)
 2. [필수 라이브러리 설치](#2-필수-라이브러리-설치)
 3. [하드웨어 / 캘리브레이션 준비](#3-하드웨어--캘리브레이션-준비)
@@ -17,6 +18,13 @@ DSR 직접 제어 버전과 MoveIt2 기반 3가지 시나리오(단일 픽 / 정
 8. [파라미터 튜닝](#8-파라미터-튜닝)
 9. [키보드 조작](#9-키보드-조작)
 10. [트러블슈팅](#10-트러블슈팅)
+
+---
+
+## 0. 실행 영상
+
+- [box 적재 시연](https://drive.google.com/file/d/1dsnGKbeRjFXHxmgMH4i9QsRSVUQ3AwNT/view?usp=sharing)
+- [sort 정렬 시연](https://drive.google.com/file/d/1jSV0tIpiSE7unwCoQB0rZ__a4fXgRwPO/view?usp=sharing)
 
 ---
 
