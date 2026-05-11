@@ -73,7 +73,7 @@ source /doosan_ros2/install/local_setup.bash
 ros2 launch dsr_bringup dsr_bringup.launch.py
 
 # 터미널 3: MoveIt2 + 동기화 노드 런칭
-ros2 launch isaac_moveit moveit.launch.py mode:=real model:='m0609' host:=192.168.0.10
+ros2 launch isaac_moveit moveit.launch.py mode:=real model:='m0609' host:=192.168.1.100
 ```
 
 ### 3. RViz2에서 MoveIt2 인터페이스 실행
