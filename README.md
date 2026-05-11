@@ -12,7 +12,7 @@ Doosan M0609 + OnRobot RG2 기반 ROS 2 / MoveIt2 데모 모음 — Pick & Place
 | Task 2 — YOLO Vision (box 적재) | [Google Drive](https://drive.google.com/file/d/1dsnGKbeRjFXHxmgMH4i9QsRSVUQ3AwNT/view?usp=sharing) |
 | Task 2 — YOLO Vision (sort 정렬) | [Google Drive](https://drive.google.com/file/d/1jSV0tIpiSE7unwCoQB0rZ__a4fXgRwPO/view?usp=sharing) |
 | Task 3 — STT 음성 명령 Pick & Place | [Google Drive](https://drive.google.com/file/d/1cT0eEe5FO22uDxywymZdJGkxNznPfb52/view?usp=sharing) |
-
+| Task 4 - Isaac Sim 연동 | [Google Drive](https://drive.google.com/file/d/1fDG6qH8Nuw9tJDRpJRLaYMf-zVRAYC4J/view?usp=drive_link) |
 ---
 
 ## 주제별 구성
