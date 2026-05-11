@@ -42,7 +42,7 @@ Intel RealSense 깊이 카메라 + YOLO 객체 검출로 자동 Pick & Place. DS
 - 흐름: `stt_node` → `nlp_node` → `motion_node` → `tts_node`
 - 문서: [`task_3/README.md`](task_3/README.md)
 
-### Task 4 — Isaac Sim 연동
+### [Task 4 — Isaac Sim 연동](task_4/README.md)
 
 Isaac Sim에서 Doosan M0609 + OnRobot RG2 시뮬레이션과 ROS 2 브리지.
 
@@ -51,6 +51,7 @@ Isaac Sim에서 Doosan M0609 + OnRobot RG2 시뮬레이션과 ROS 2 브리지.
 - `doosan_ros2/` — Doosan ROS 2 드라이버 / 인터페이스
 - `IsaacSim-ros_workspaces/` — Isaac Sim용 ROS 2 워크스페이스 빌드 스크립트
 - `isaac_moveit_m0609_rg2.py` — Isaac Sim ↔ MoveIt2 통합 실행 스크립트
+- 문서: ['task_4/READMD.md'](task_4/README.md)
 
 ---
 
