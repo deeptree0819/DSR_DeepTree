@@ -6,7 +6,6 @@ Isaac Sim 시뮬레이션 환경에서 MoveIt2를 통해 실제 Doosan m0609 로
 
 이 프로젝트는 다음 3가지 모드를 지원합니다:
 
-- **Isaac 전용 모드** (`mode:=isaac`): Isaac Sim 내에서만 로봇 시뮬레이션
 - **실물 연동 모드** (`mode:=real`): MoveIt2를 통해 실제 로봇 제어
 - **Virtual 모드** (`mode:=virtual`): Virtual controller를 통한 시뮬레이션
 
